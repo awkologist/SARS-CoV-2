@@ -1,11 +1,24 @@
 BEGIN{
-while(getline < "ncbi-cov2-len-29903.tab" > 0){
-  num=gensub(/\.[0-9]/,"","g",$1); seq[num]=$2; id[num]=$1}
+if(id2=="" || seq=="" || anno==""){
+  print "  Run as:"
+  print "    awk -f compare-cov2.awk -v seq=seqs.tab -v anno=annos.tab -v id1=ID1 -v id2=ID2"
+  print "  where seqs.tab is the sequence file in tab format and"
+  print "        annos.tab is the annotation file in tab format."
+  print "  If -v id1=... is omitted, the reference genome ID NC_045512.2 will be used." 
+  exit}
 
-while(getline < "ncbi-cov2-len-29903-dates.tab" > 0){date[$1]=$3; place[$1]=$2}
+if(id1==""){id1="NC_045512"}
 
-if(id[a] != "" && id[b] != ""){
-  print id[a]" > "id[b]" | "date[a]" > "date[b]" | "place[a]" > "place[b]
+while(getline < seq > 0){
+  if($2 ~ /^ATTAAA/){  # remove bad seqs
+    num=gensub(/\.[0-9]/,"","g",$1); # remove .2 oder so
+    sequence[num]=$2; id[num]=$1}
+    }
+
+while(getline < anno > 0){date[$1]=$3; place[$1]=$2}
+
+if(id[id1] != "" && id[id2] != ""){
+  print id[id1]" > "id[id2]" | "date[id1]" > "date[id2]" | "place[id1]" > "place[id2]
   }
   else{print "ID not found!"; exit}
 
@@ -13,9 +26,9 @@ spike="MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGT
 
 split(spike,spikearray,"")
 
-split(seq[a],seq1,""); split(seq[b],seq2,"")
+split(sequence[id1],seq1,""); split(sequence[id2],seq2,"")
 
-for(i=1; i<=length(seq[a]); i++){
+for(i=1; i<=length(sequence[id1]); i++){
   if(seq1[i] == "N" || seq2[i] == "N"){n++}
   if(seq1[i] != seq2[i] && seq1[i] != "N" && seq2[i] != "N"){
 	if(i >=21563 && i<= 25384){name="SPIKE NT:"i-21563+1" AA:"1+int((i-21563+1)/3)" -> "spikearray[1+int((i-21563+1)/3)]}
@@ -25,6 +38,6 @@ for(i=1; i<=length(seq[a]); i++){
 	name=""
 	ex++}
   }
-print "# of N's: "n" of "length(seq[a])
-print "# of exchanges: "ex" of "length(seq[a])
+print "# of N's: "n" of "length(sequence[id1])
+print "# of exchanges: "ex" of "length(sequence[id1])
 }
