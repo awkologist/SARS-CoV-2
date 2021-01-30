@@ -10,7 +10,7 @@ if(id2=="" || seq=="" || anno==""){
 if(id1==""){id1="NC_045512"}
 
 while(getline < seq > 0){
-  if($2 ~ /^ATTAAA/){  # remove bad seqs
+  if($1=="MT846012.1" || $2 ~ /^ATTAAA/){  # remove bad seqs
     num=gensub(/\.[0-9]/,"","g",$1); # remove .2 oder so
     sequence[num]=$2; id[num]=$1}
     }
