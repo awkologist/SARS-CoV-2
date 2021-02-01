@@ -10,7 +10,7 @@ if(id2=="" || seq=="" || anno==""){
 if(id1==""){id1="NC_045512"}
 
 while(getline < seq > 0){
-  if($1!="MT846012.1" || $2 ~ /^ATTAAA/){  # remove bad seqs
+  if($1!="MT846012.1" && $2 ~ /^ATTAAA/){  # remove bad seqs
     num=gensub(/\.[0-9]/,"","g",$1); # remove .2 oder so
     sequence[num]=$2; id[num]=$1}
     }
@@ -34,7 +34,7 @@ for(i=1; i<=length(sequence[id1]); i++){
 	if(i >=21563 && i<= 25384){name="SPIKE NT:"i-21563+1" AA:"1+int((i-21563+1)/3)" -> "spikearray[1+int((i-21563+1)/3)]}
 	if(i >=22517 && i<= 23191){name=name" RBDomain"}
 	if(i >=22875 && i<= 23079){name=name" RBMotif"}
-	print i": "seq1[i]">"seq2[i]" "name; 
+	print id[id2]" "i": "seq1[i]">"seq2[i]" "name; 
 	name=""
 	ex++}
   }
