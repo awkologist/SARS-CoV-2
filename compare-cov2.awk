@@ -13,12 +13,15 @@ while(getline < seq > 0){
   if($1!="MT846012.1" && $2 ~ /^ATTAAA/){  # remove bad seqs
     num=gensub(/\.[0-9]/,"","g",$1); # remove .2 oder so
     sequence[num]=$2; id[num]=$1}
+    else{num=gensub(/\.[0-9]/,"","g",$1); removed=removed" "num}
     }
+
+if(removed ~ id1 || removed ~ id2){print "ID did not pass filter!"; exit}
 
 while(getline < anno > 0){date[$1]=$3; place[$1]=$2}
 
 if(id[id1] != "" && id[id2] != ""){
-  print id[id1]" > "id[id2]" | "date[id1]" > "date[id2]" | "place[id1]" > "place[id2]
+  print "# "id[id1]" > "id[id2]" | "date[id1]" > "date[id2]" | "place[id1]" > "place[id2]
   }
   else{print "ID not found!"; exit}
 
@@ -38,6 +41,7 @@ for(i=1; i<=length(sequence[id1]); i++){
 	name=""
 	ex++}
   }
+if(n==""){n=0}; if(ex==""){ex=0}
 print "# of N's: "n" of "length(sequence[id1])
 print "# of exchanges: "ex" of "length(sequence[id1])
 }
