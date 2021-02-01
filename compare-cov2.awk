@@ -34,9 +34,9 @@ split(sequence[id1],seq1,""); split(sequence[id2],seq2,"")
 for(i=1; i<=length(sequence[id1]); i++){
   if(seq1[i] == "N" || seq2[i] == "N"){n++}
   if(seq1[i] != seq2[i] && seq1[i] != "N" && seq2[i] != "N"){
-	if(i >=21563 && i<= 25384){name="SPIKE NT:"i-21563+1" AA:"1+int((i-21563+1)/3)" -> "spikearray[1+int((i-21563+1)/3)]}
-	if(i >=22517 && i<= 23191){name=name" RBDomain"}
-	if(i >=22875 && i<= 23079){name=name" RBMotif"}
+	if(i >=21563 && i<= 25383){name="SPIKE NT:"i-21563+1" AA:"1+int((i-21563+1)/3)" -> "spikearray[1+int((i-21563+1)/3)]}
+	if(i >=22517 && i<= 23183){name=name" RBDomain"}
+	if(i >=22871 && i<= 23084){name=name" RBMotif"}
 	print id[id2]" "i": "seq1[i]">"seq2[i]" "name; 
 	name=""
 	ex++}
