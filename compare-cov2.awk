@@ -10,18 +10,14 @@ if(id2=="" || seq=="" || anno==""){
 if(id1==""){id1="NC_045512"}
 
 while(getline < seq > 0){
-  if($1!="MT846012.1" && $2 ~ /^ATTAAA/){  # remove bad seqs
-    num=gensub(/\.[0-9]/,"","g",$1); # remove .2 oder so
-    sequence[num]=$2; id[num]=$1}
-    else{num=gensub(/\.[0-9]/,"","g",$1); removed=removed" "num}
+    gsub(/\.[0-9]/,"",$1); # remove .2 oder so
+    sequence[$1]=$2
     }
 
-if(removed ~ id1 || removed ~ id2){print "ID did not pass filter!"; exit}
+while(getline < anno > 0){gsub(/\.[0-9]/,"",$1);date[$1]=$3; place[$1]=$2}
 
-while(getline < anno > 0){date[$1]=$3; place[$1]=$2}
-
-if(id[id1] != "" && id[id2] != ""){
-  print "# "id[id1]" > "id[id2]" | "date[id1]" > "date[id2]" | "place[id1]" > "place[id2]
+if(sequence[id1] != "" && sequence[id2] != ""){
+  print "# "id1" > "id2" | "date[id1]" > "date[id2]" | "place[id1]" > "place[id2]
   }
   else{print "ID not found!"; exit}
 
@@ -37,7 +33,7 @@ for(i=1; i<=length(sequence[id1]); i++){
 	if(i >=21563 && i<= 25383){name="SPIKE NT:"i-21563+1" AA:"1+int((i-21563+1)/3)" -> "spikearray[1+int((i-21563+1)/3)]}
 	if(i >=22517 && i<= 23183){name=name" RBDomain"}
 	if(i >=22871 && i<= 23084){name=name" RBMotif"}
-	print id[id2]" "i": "seq1[i]">"seq2[i]" "name; 
+	print id2" "i": "seq1[i]">"seq2[i]" "name; 
 	name=""
 	ex++}
   }
